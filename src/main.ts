@@ -6,10 +6,17 @@ async function bootstrap() {
 
   app.enableCors({
     allowedHeaders: ['content-type'],
-    origin: 'http://localhost:3000',
+    origin: (origin, callback) => {
+      const allowedOrigins = ['http://localhost:3000'];
+      const isAllowedOrigin = allowedOrigins.includes(origin);
+      console.log(origin);
+
+      callback(null, isAllowedOrigin);
+    },
     credentials: true,
   });
 
-  await app.listen(process.env.PORT, '0.0.0.0');
+  await app.listen(process.env.PORT || 8080, '0.0.0.0');
 }
+
 bootstrap();
