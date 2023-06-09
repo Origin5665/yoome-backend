@@ -9,10 +9,10 @@ async function bootstrap() {
     origin: (origin, callback) => {
       const allowedOrigins = [
         'http://localhost:3000',
-        'https://master--rococo-horse-a800ae.netlify.app/',
+        'https://master--rococo-horse-a800ae.netlify.app',
       ];
       const isAllowedOrigin = allowedOrigins.includes(origin);
-      console.log(origin);
+      console.log(origin, isAllowedOrigin);
 
       callback(null, isAllowedOrigin);
     },
