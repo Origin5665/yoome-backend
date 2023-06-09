@@ -1,18 +1,42 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
-import { Todo } from './todo.interface';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Todo } from './todo.schema';
 
 @Controller('todo')
 export class TodoController {
-  private todos: Todo[] = [];
+  constructor(@InjectModel('Todo') private readonly todoModel: Model<Todo>) {}
 
   @Get()
-  getAllTodos(): Todo[] {
-    return this.todos;
+  async getAllTodos(): Promise<Todo[]> {
+    return this.todoModel.find().exec();
   }
 
   @Post()
-  createTodo(@Body() todo: Todo): Todo {
-    this.todos.push(todo);
-    return todo;
+  async createTodo(@Body() todo: Todo): Promise<Todo> {
+    const newTodo = new this.todoModel(todo);
+    return newTodo.save();
+  }
+
+  @Put(':id')
+  async updateTodo(
+    @Param('id') id: string,
+    @Body() todo: Todo,
+  ): Promise<Todo | null> {
+    console.log(todo);
+    return this.todoModel.findByIdAndUpdate(id, todo, { new: true }).exec();
+  }
+
+  @Delete(':id')
+  async deleteTodo(@Param('id') id: string): Promise<Todo | null> {
+    return this.todoModel.findByIdAndRemove(id).exec();
   }
 }
