@@ -20,9 +20,14 @@ export class TodoController {
     return this.todoModel.find().exec();
   }
 
+  @Get('completed')
+  async getCompletedTodos(): Promise<Todo[]> {
+    return this.todoModel.find({ completed: true }).exec();
+  }
+
   @Post()
   async createTodo(@Body() todo: Todo): Promise<Todo> {
-    const newTodo = new this.todoModel(todo);
+    const newTodo = new this.todoModel({ ...todo, createdAt: new Date(), updatedAt: new Date() });
     return newTodo.save();
   }
 
@@ -31,7 +36,7 @@ export class TodoController {
     @Param('id') id: string,
     @Body() todo: Todo,
   ): Promise<Todo | null> {
-    console.log(todo);
+    todo.updatedAt = new Date();
     return this.todoModel.findByIdAndUpdate(id, todo, { new: true }).exec();
   }
 

@@ -9,7 +9,7 @@ async function bootstrap() {
     origin: (origin, callback) => {
       const allowedOrigins = [
         'http://localhost:3000',
-        'https://master--rococo-horse-a800ae.netlify.app',
+        'https://master--rococo-horse-a800ae.netlify.app/todo',
       ];
       const isAllowedOrigin = allowedOrigins.includes(origin);
       console.log(origin, isAllowedOrigin);
@@ -19,7 +19,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(process.env.PORT, '0.0.0.0');
+  await app.listen(process.env.PORT || 8080, '0.0.0.0');
 }
 
 bootstrap();
