@@ -12,13 +12,13 @@ async function bootstrap() {
         'https://master--rococo-horse-a800ae.netlify.app',
       ];
       const isAllowedOrigin = allowedOrigins.includes(origin);
-      console.log(origin, isAllowedOrigin);
 
       callback(null, isAllowedOrigin);
     },
     credentials: true,
   });
 
+  // await app.listen(8080, '0.0.0.0');
   await app.listen(process.env.PORT, '0.0.0.0');
 }
 

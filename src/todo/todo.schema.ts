@@ -14,5 +14,5 @@ export const TodoSchema = new Schema<Todo>(
     description: String,
     completed: Boolean,
   },
-  { timestamps: true }, // Automatically adds createdAt and updatedAt fields
+  { timestamps: true },
 );

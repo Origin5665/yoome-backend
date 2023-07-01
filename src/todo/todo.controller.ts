@@ -6,12 +6,15 @@ import {
   Delete,
   Body,
   Param,
+  UseGuards,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Todo } from './todo.schema';
+import { JwtAuthGuard } from '../guards/jwtGuard';
 
 @Controller('todo')
+@UseGuards(JwtAuthGuard)
 export class TodoController {
   constructor(@InjectModel('Todo') private readonly todoModel: Model<Todo>) {}
 
@@ -27,7 +30,11 @@ export class TodoController {
 
   @Post()
   async createTodo(@Body() todo: Todo): Promise<Todo> {
-    const newTodo = new this.todoModel({ ...todo, createdAt: new Date(), updatedAt: new Date() });
+    const newTodo = new this.todoModel({
+      ...todo,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
     return newTodo.save();
   }
 
